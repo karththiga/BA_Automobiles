@@ -17,7 +17,7 @@ library(ggplot2)
 library(moments)
 
 # Load the dataset
-auto <- read.csv("/Users/shagevan/Desktop/BA_Automobile_Analytics/auto_Info.csv")
+auto <- read.csv("auto_Info.csv")
 
 # View structure of data
 str(auto)
@@ -66,7 +66,7 @@ ggplot(auto, aes(x = engine_size)) +
   theme_minimal()
 ```
 
-**Interpretation
+# Interpretation:
 The closeness of the mean and median indicates a well-centred distribution. This suggests that moderate engine sizes dominate the dataset, supporting a balance between performance and fuel efficiency. Such vehicles are more suitable for Sri Lanka's congested urban roads and mixed terrain, where excessive engine power is unnecessary.
 
 
@@ -104,7 +104,7 @@ ggplot(auto, aes(x = horsepower)) +
   theme_minimal()
 ```
 
-#Interpretation:
+# Interpretation:
 The near-equality of the mean and median reflects a stable central tendency. Moderate horsepower levels support safer driving and controlled vehicle handling, which are important for Sri Lanka's narrow roads and varying traffic conditions.
 
 
@@ -142,7 +142,7 @@ ggplot(auto, aes(x = curb_weight)) +
   theme_minimal()
 ```
 
-#Interpretation
+# Interpretation
 The close alignment of the mean and median indicates a consistent distribution. The dominance of lighter vehicles supports improved fuel efficiency, reduced road wear, and better maneuverability, which are particularly beneficial for Sri Lanka's urban and semi-urban road networks.
 
 ---
@@ -181,7 +181,7 @@ ggplot(auto, aes(x = price)) +
   theme_minimal()
 ```
 
-#Interpretation:
+# Interpretation:
 Since the mean is slightly higher than the median, the distribution indicates the presence of higher-priced vehicles influencing the average. In this case, the median provides a more representative measure of typical vehicle cost, supporting fair pricing, taxation, and vehicle import policy decisions.
 
 
@@ -202,7 +202,7 @@ skew_price
 
 ```
 
-#Interpretation:
+# Interpretation:
 All variables exhibit positive skewness, indicating right-tailed distributions. Among them, engine size has the highest positive skewness, suggesting a slightly longer right tail due to a small number of vehicles with larger engines. However, the skewness values for all variables are relatively low (close to 0), confirming that the distributions are approximately symmetric. Therefore, the mean and median are reliable measures of central tendency, and the bell curves appropriately represent the underlying data.
 
 
@@ -249,7 +249,7 @@ if (p_value_anova < alpha) {
 }
 ```
 
-#Statistical Interpretation:
+# Statistical Interpretation:
 The ANOVA test produced an F-value of 1.701 with a p-value of 0.133. Since the p-value (0.133) is greater than the significance level (0.05), we fail to reject the null hypothesis. This indicates that there is no statistically significant difference in mean vehicle prices across different vehicle types in the dataset.
 
 ## 4.4 Graphical Analysis
@@ -266,7 +266,7 @@ ggplot(auto, aes(x = vehicle_type, y = price, fill = vehicle_type)) +
         axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-#Graphical Interpretation:
+# Graphical Interpretation:
 The box plot illustrating vehicle price distributions across vehicle types shows overlapping price ranges and similar median values among categories. Although some vehicle types display slightly higher price variability, the substantial overlap among groups visually supports the ANOVA result that price differences are not statistically significant.
 
 
@@ -279,6 +279,10 @@ This analysis determines whether statistically significant relationships exist b
 ## 5.2 Normality Assessment (Hypothesis-Based Testing)
 
 ```{r}
+# Formal normality test for vehicle price
+shapiro_price <- shapiro.test(auto$price)
+print(shapiro_price)
+
 # Distribution of Vehicle Price (Graphical Normality Check)
 ggplot(auto, aes(x = price)) +
   geom_histogram(aes(y = after_stat(density)),
@@ -296,8 +300,13 @@ ggplot(auto, aes(x = price)) +
   theme_minimal()
 ```
 
-#Normality Interpretation:
-Normality was assessed using histogram and bell curve visualisation. The graphical analysis shows that vehicle price follows an approximately normal distribution, with the histogram closely following the bell curve pattern. Due to the large sample size (n ≈ 500), the Central Limit Theorem applies, allowing the use of parametric inferential tests. Therefore, Pearson correlation was selected as an appropriate method to examine linear relationships between vehicle price and other features.
+# Normality Interpretation:
+Normality was assessed using both a formal hypothesis test and graphical methods.
+
+- Null hypothesis (H0): Vehicle price is normally distributed.
+- Alternative hypothesis (H1): Vehicle price is not normally distributed.
+
+The Shapiro-Wilk result should be interpreted with the plot. With moderate-to-large samples, minor deviations from normality are frequently detected as statistically significant. Since the histogram is approximately bell shaped and the sample size is large (n ≈ 500), Pearson correlation and linear regression remain acceptable and robust for this analysis.
 
 ## 5.3 Correlation Analysis and Hypothesis Testing
 
@@ -330,11 +339,11 @@ if (test_engine$p.value < alpha) {
 }
 
 ```
-#Correlation Interpretation
+# Correlation Interpretation
 
 The Pearson correlation coefficient (r = 0.183) indicates a weak positive linear relationship between vehicle price and engine size. The p-value (3.844e-05) is less than 0.05, so the null hypothesis is rejected. This confirms a statistically significant positive relationship between vehicle price and engine size.
 
-#Regression Analysis:
+# Regression Analysis:
 
 ```{r}
 # Simple Linear Regression
@@ -354,15 +363,15 @@ ggplot(auto, aes(x = engine_size, y = price)) +
   theme_minimal()
 ```
 
-#Interpretation:
+# Interpretation:
 The Pearson correlation coefficient (r = 0.183) indicates a weak positive linear relationship between vehicle price and engine size. Since the p-value (3.84e-05) is less than 0.05, the null hypothesis is rejected. The regression model shows that for every 1 litre increase in engine size, vehicle price increases by approximately USD 2,378.60. The R-squared value (0.0335) indicates that 3.35% of the variation in price is explained by engine size. Although this is a weak model, the relationship is statistically significant.
 
 
 ### 5.3.2 Vehicle Price vs Horsepower
 
-**Null Hypothesis (H0): There is no statistically significant linear relationship between vehicle price and horsepower.
+Null Hypothesis (H0): There is no statistically significant linear relationship between vehicle price and horsepower.
 
-**Alternative Hypothesis (H1): There is a statistically significant linear relationship between vehicle price and horsepower.
+Alternative Hypothesis (H1): There is a statistically significant linear relationship between vehicle price and horsepower.
 
 ```{r}
 # Correlation test: Price vs Horsepower
@@ -385,11 +394,11 @@ if (test_hp$p.value < alpha) {
   cat("Conclusion: There is NO significant linear relationship between price and horsepower.\n")
 }
 ```
-#Interpretation
+# Interpretation
 The Pearson correlation coefficient (r = 0.602) indicates a moderate positive linear relationship between vehicle price and horsepower. The p-value (1.57e-50) is less than 0.05, so the null hypothesis is rejected. This confirms a statistically significant positive relationship between vehicle price and horsepower.
 
 
-#Regression Analysis
+# Regression Analysis
 
 ```{r}
 # Simple Linear Regression
@@ -409,7 +418,7 @@ ggplot(auto, aes(x = horsepower, y = price)) +
   theme_minimal()
 ```
 
-#Interpretation
+# Interpretation
 The Pearson correlation coefficient indicates a moderate positive linear relationship between vehicle price and horsepower. Since the p-value is less than 0.05, the null hypothesis is rejected. The regression model confirms that as horsepower increases, vehicle price also increases. The R-squared value indicates that a good proportion of variation in price is explained by horsepower. Higher-powered vehicles command higher prices due to enhanced performance.
 
 
@@ -440,10 +449,10 @@ if (test_weight$p.value < alpha) {
   cat("Conclusion: There is NO significant linear relationship between price and curb weight.\n")
 }
 ```
-#Interpretation
+# Interpretation
 The Pearson correlation coefficient (r = -0.117) indicates a weak negative linear relationship between vehicle price and curb weight. The p-value (0.0087) is less than 0.05, so the null hypothesis is rejected. This confirms a statistically significant negative relationship between vehicle price and curb weight.
 
-#Regression Analysis
+# Regression Analysis
 
 ```{r}
 # Simple Linear Regression
@@ -463,8 +472,8 @@ ggplot(auto, aes(x = curb_weight, y = price)) +
   theme_minimal()
 ```
 
-#Interpretation:
-The Pearson correlation coefficient indicates a positive linear relationship between vehicle price and curb weight. Since the p-value is less than 0.05, the null hypothesis is rejected. The regression model shows that as curb weight increases, vehicle price also increases. Heavier vehicles tend to be priced higher due to stronger construction, increased capacity, and enhanced safety features.
+# Interpretation:
+The Pearson correlation coefficient indicates a weak negative linear relationship between vehicle price and curb weight. Since the p-value is less than 0.05, the null hypothesis is rejected. The regression model suggests that higher curb weight is associated with a slight reduction in price in this dataset, possibly due to interaction with age, vehicle type mix, and market segment effects.
 
 
 
@@ -500,11 +509,11 @@ if (test_age$p.value < alpha) {
   cat("Conclusion: There is NO significant linear relationship between price and vehicle age.")
 }
 ```
-#Interpretation
+# Interpretation
 The Pearson correlation coefficient (r = -0.689) indicates a strong negative linear relationship between vehicle price and vehicle age. The p-value (1.182e-71) is less than 0.05, so the null hypothesis is rejected. This confirms a statistically significant negative relationship between vehicle price and vehicle age.
 
 
-#Regression Analysis
+# Regression Analysis
 
 ```{r}
 # Simple Linear Regression
@@ -524,7 +533,7 @@ ggplot(auto, aes(x = age, y = price)) +
   theme_minimal()
 ```
 
-#Interpretation
+# Interpretation
 The Pearson correlation coefficient indicates a strong negative linear relationship between vehicle price and vehicle age. Since the p-value is less than 0.05, the null hypothesis is rejected. The regression model confirms that as vehicle age increases, vehicle price decreases. The R-squared value indicates that a significant proportion of variation in price is explained by vehicle age. This confirms that vehicle prices decrease due to depreciation, wear and tear, and reduced market value.
 
 
@@ -542,7 +551,7 @@ correlation_summary <- data.frame(
               format(test_hp$p.value, scientific = TRUE, digits = 3),
               format(test_weight$p.value, scientific = TRUE, digits = 3),
               format(test_age$p.value, scientific = TRUE, digits = 3)),
-  Direction = c("Positive", "Positive", "Positive", "Negative"),
+  Direction = c("Positive", "Positive", "Negative", "Negative"),
   Decision = c("Reject H0", "Reject H0", "Reject H0", "Reject H0")
 )
 
@@ -560,5 +569,4 @@ Based on correlation analysis, normality testing, regression trend validation, a
 - Evidence-based import regulations can be designed considering performance, safety, and sustainability.
 - Supports transparent, data-driven transport planning aligned with national development goals.
 
-
-
+---
