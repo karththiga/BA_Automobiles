@@ -1,0 +1,135 @@
+---
+title: "BA_Assignment"
+author: "Karththiga"
+date: "2025-12-29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+auto <- read.csv("/Users/shagevan/Desktop/BA_Automobile_Analytics/auto_Info.csv")
+auto
+
+library(dplyr)
+library(ggplot2)
+
+```
+Engine Size Analysis
+```{r}
+mean_engine <- mean(auto$engine_size)
+median_engine <- median(auto$engine_size)
+sd_engine <- sd(auto$engine_size)
+
+mean_engine
+median_engine
+sd_engine
+
+ggplot(auto, aes(x = engine_size)) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30,
+                 fill = "lightblue",
+                 color = "black") +
+  stat_function(fun = dnorm,
+                args = list(mean = mean_engine, sd = sd_engine),
+                color = "red",
+                linewidth = 1) +
+  labs(title = "Bell Curve of Engine Size",
+       x = "Engine Size (Litres)",
+       y = "Density")
+
+```
+Interpretation
+The bell curve shows that most vehicles cluster around a moderate engine size. This indicates a preference for balanced performance and fuel efficiency. Vehicles with extremely large engines are less common, making mid-range engine vehicles more suitable for Sri Lanka’s congested urban roads and mixed terrain.
+
+
+
+horse power analysis
+```{r}
+mean_hp <- mean(auto$horsepower)
+median_hp <- median(auto$horsepower)
+sd_hp <- sd(auto$horsepower)
+
+# Bell curve of horsepower
+ggplot(auto, aes(x = horsepower)) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30,
+                 fill = "lightgreen",
+                 color = "black") +
+  stat_function(fun = dnorm,
+                args = list(mean = mean_hp, sd = sd_hp),
+                color = "red",
+                linewidth = 1) +
+  labs(title = "Bell Curve of Horsepower",
+       x = "Horsepower",
+       y = "Density")
+
+
+```
+interpretation
+The distribution indicates that most vehicles operate within a moderate horsepower range. High-performance vehicles are limited, supporting the suitability of moderate-power vehicles for road safety and controlled driving conditions in Sri Lanka.
+
+
+Curb Weight Analysis
+
+```{r}
+mean_weight <- mean(auto$curb_weight)
+median_weight <- median(auto$curb_weight)
+sd_weight <- sd(auto$curb_weight)
+
+mean_weight
+median_weight
+sd_weight
+
+ggplot(auto, aes(x = curb_weight)) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30,
+                 fill = "orange",
+                 color = "black") +
+  stat_function(fun = dnorm,
+                args = list(mean = mean_weight, sd = sd_weight),
+                color = "red",
+                linewidth = 1) +
+  labs(title = "Bell Curve of Curb Weight",
+       x = "Curb Weight (lbs)",
+       y = "Density")
+
+
+```
+interpretation
+
+The bell curve indicates that lighter vehicles are more common in the dataset. This supports fuel efficiency, reduced road wear, and improved maneuverability, which are important for Sri Lanka’s urban and semi-urban road networks.
+
+
+Price Analysis
+```{r}
+mean_price <- mean(auto$price)
+median_price <- median(auto$price)
+sd_price <- sd(auto$price)
+
+mean_price
+median_price
+sd_price
+
+#Bell Curve
+ggplot(auto, aes(x = price)) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 30,
+                 fill = "pink",
+                 color = "black") +
+  stat_function(fun = dnorm,
+                args = list(mean = mean_price, sd = sd_price),
+                color = "red",
+                linewidth = 1) +
+  labs(title = "Bell Curve of Vehicle Price",
+       x = "Price (USD)",
+       y = "Density")
+
+
+```
+interpretation
+The price distribution shows greater variability with a right-skewed pattern, indicating the presence of high-priced vehicles. In this case, the median price provides a more accurate representation of a typical vehicle cost, supporting fair pricing and taxation decisions.
+
+
